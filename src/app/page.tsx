@@ -1,6 +1,9 @@
 import Image from "next/image";
 import education from '../../public/erp_home.png'
 import enseigne from '../../public/archive.png'
+import directeur from '../../public/01.png'
+import enseignant from '../../public/02.png'
+import educteur from '../../public/03.png'
 import teacher from '../../public/home_teacher_fr.png'
 import student from '../../public/article_2.png'
 import tablette from '../../public/tablette.svg'
@@ -9,19 +12,19 @@ import Link from 'next/link'
 
 const cards = [
   {
-    img: education,
+    img: directeur,
     descriptif: 'Administrateurs et directeurs',
     link : '',
     texte: 'Simplifiez-vous la vie avec une gestion digitale de votre établissement. Tous vos rapports administratifs en un clique.',
   },
   {
-    img: education,
+    img: enseignant,
     descriptif: 'Enseignants',
     link : '',
     texte: 'Passez vers une gestion moderne de vos classes et vos élèves. Postez et réutilisez vos contenus éducatifs et économisez votre énergie.',
   },
   {
-    img: education,
+    img: educteur,
     descriptif: 'Parents et élèves',
     link : '',
     texte: 'Suivez le parcours scolaire de vos enfants en temps réel. Accédez aux contenus pédagogiques et aux résultats scolaires de vos enfants.',
