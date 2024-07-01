@@ -1,5 +1,7 @@
 
 import Link from 'next/link';
+import Image from 'next/image';
+import Logo from '../../public/logo-removebg.png'
 
 const Header = () => {
 
@@ -9,7 +11,14 @@ const Header = () => {
       <div className="container mx-auto flex items-center justify-between py-4">
         {/* Logo ou titre */}
         <div>
-          <Link href="/" className="text-2xl font-bold">Votre Logo ou Titre</Link>
+          <Link href="/" className="text-2xl font-bold">
+             <Image
+              src={Logo}
+              width={100}
+              height={100}
+              alt="Picture of the author"
+            />
+          </Link>
         </div>
         
         {/* Menu de navigation */}
