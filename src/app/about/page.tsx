@@ -82,7 +82,7 @@ function AboutSection() {
       <div className="container mx-auto flex flex-col md:flex-row items-center">
         {/* Texte à gauche */}
         <div className="md:w-1/2 mb-6 md:mb-0">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-500 mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500 mb-4">
             Nombre de pays connectés
           </h2>
           <p className="text-lg md:text-xl text-gray-700 mb-4">
