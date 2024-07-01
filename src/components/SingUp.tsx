@@ -1,10 +1,10 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-const SignupForm = () => {
+const SignupForm: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -14,7 +14,7 @@ const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -22,7 +22,7 @@ const SignupForm = () => {
     }));
   };
 
-  const togglePasswordVisibility = (type) => {
+  const togglePasswordVisibility = (type: 'password' | 'confirmPassword') => {
     if (type === 'password') {
       setShowPassword(!showPassword);
     } else if (type === 'confirmPassword') {
@@ -30,7 +30,7 @@ const SignupForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Add form submission logic here
     console.log(formData); // Example: Print form data to console
@@ -135,13 +135,13 @@ const SignupForm = () => {
               type="submit"
               className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              S&apos;inscrire
+              Demande d&apos;inscriptin
             </button>
           </div>
         </form>
         <p className="text-center text-gray-600 mt-4">
           Déjà inscrit ?{' '}
-          <Link href="/login" className="text-blue-500 hover:underline">
+          <Link href="/login" passHref className="text-blue-500 hover:underline">
             Connectez-vous ici
           </Link>{' '}
           pour accéder à votre compte.
