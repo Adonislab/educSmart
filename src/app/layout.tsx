@@ -3,16 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-
-
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+import LoadingLogo from "@/components/LoadingLogo";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
-
 export const metadata: Metadata = {
   title: "EducSmart",
-  description: "Votre logicielle de gestion des écloes et de suivi parentales",
+  description: "Votre logiciel de gestion des écoles et de suivi parental",
 };
 
 export default function RootLayout({
@@ -23,9 +21,12 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={inter.className}>
-        <Header/>
-        {children}
-        <Footer/>
+        <LoadingLogo>
+          <Header />
+          {children}
+          <Footer />
+          <ScrollToTopButton />
+        </LoadingLogo>
       </body>
     </html>
   );
