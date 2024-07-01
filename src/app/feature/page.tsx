@@ -1,8 +1,9 @@
 import React from 'react'
+import SigninForm from '@/components/SingnIn'
 
 function index() {
   return (
-    <div>Fonctionnalité</div>
+   <SigninForm/>
   )
 }
 
