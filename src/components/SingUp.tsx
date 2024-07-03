@@ -3,18 +3,48 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { toast, Toaster } from 'react-hot-toast';
+
+interface FormData {
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
 
 const SignupForm: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
-    confirmPassword: '',
-    role: '',
+    password_confirmation: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const signup = async (userData: FormData) => {
+    try {
+      const response = await fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user: userData }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      toast.success('Inscription réussie!');
+      // Redirection à l'aide de window.location
+      window.location.href = '/account-update';
+    } catch (error) {
+      toast.error('Erreur lors de l\'inscription.');
+      console.error('Error:', error);
+    }
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -22,23 +52,26 @@ const SignupForm: React.FC = () => {
     }));
   };
 
-  const togglePasswordVisibility = (type: 'password' | 'confirmPassword') => {
+  const togglePasswordVisibility = (type: 'password' | 'password_confirmation') => {
     if (type === 'password') {
       setShowPassword(!showPassword);
-    } else if (type === 'confirmPassword') {
+    } else if (type === 'password_confirmation') {
       setShowConfirmPassword(!showConfirmPassword);
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add form submission logic here
-    console.log(formData); // Example: Print form data to console
+    if (formData.password !== formData.password_confirmation) {
+      toast.error('Les mots de passe ne correspondent pas!');
+      return;
+    }
+    await signup(formData);
   };
 
   return (
     <div className="relative flex flex-col items-center justify-center bg-orange-100 py-16 md:py-24">
-      {/* Formulaire en bas */}
+      <Toaster />
       <div className="max-w-md w-full md:w-auto md:mx-auto md:bg-white md:p-6 md:rounded-md md:shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-orange-500">Inscription</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -85,23 +118,23 @@ const SignupForm: React.FC = () => {
             </div>
           </div>
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700">
               Confirmer le mot de passe
             </label>
             <div className="relative">
               <input
-                id="confirmPassword"
-                name="confirmPassword"
+                id="password_confirmation"
+                name="password_confirmation"
                 type={showConfirmPassword ? 'text' : 'password'}
                 autoComplete="new-password"
                 required
-                value={formData.confirmPassword}
+                value={formData.password_confirmation}
                 onChange={handleChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
               <button
                 type="button"
-                onClick={() => togglePasswordVisibility('confirmPassword')}
+                onClick={() => togglePasswordVisibility('password_confirmation')}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
                 <FontAwesomeIcon
@@ -112,30 +145,11 @@ const SignupForm: React.FC = () => {
             </div>
           </div>
           <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-              Rôle
-            </label>
-            <select
-              id="role"
-              name="role"
-              required
-              value={formData.role}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            >
-              <option value="">Sélectionner un rôle</option>
-              <option value="Enseignant">Enseignant</option>
-              <option value="Élève">Élève</option>
-              <option value="Parent">Parent</option>
-              <option value="Directeur">Directeur</option>
-            </select>
-          </div>
-          <div>
             <button
               type="submit"
               className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Demande d&apos;inscriptin
+              Demande d&apos;inscription
             </button>
           </div>
         </form>
@@ -152,3 +166,6 @@ const SignupForm: React.FC = () => {
 };
 
 export default SignupForm;
+
+
+

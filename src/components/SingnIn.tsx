@@ -1,24 +1,65 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { toast, Toaster } from 'react-hot-toast';
 
-const SigninForm = () => {
+const SigninForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null); // Référence au formulaire
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formRef.current) return; // Vérifie si formRef.current est défini
+
+    const formData = new FormData(formRef.current);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    try {
+      const response = await fetch('http://localhost:3000/users/sign_in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user: {
+            email: email,
+            password: password,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Clear form fields
+      formRef.current.reset();
+
+      toast.success('Connexion réussie!');
+      setTimeout(() => {
+        // Redirection après le toast
+        window.location.href = '/dashboard';
+      }, 2000); // Rediriger après 2 secondes
+
+    } catch (error) {
+      console.error('Error logging in:', error);
+      toast.error('Erreur lors de la connexion.');
+    }
+  };
+
   return (
     <div className="relative flex flex-col items-center justify-center bg-orange-100 py-16 md:py-24">
-      
-      {/* Formulaire en bas */}
       <div className="max-w-md w-full md:w-auto md:mx-auto md:bg-white md:p-6 md:rounded-md md:shadow-md">
+        <Toaster />
         <h2 className="text-2xl font-bold mb-6 text-center text-orange-500">Connexion</h2>
-        
-        <form className="space-y-4">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email
@@ -40,7 +81,7 @@ const SigninForm = () => {
               <input
                 id="password"
                 name="password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
                 required
                 className="block w-full px-3 py-2 text-gray-700 focus:outline-none"
@@ -64,8 +105,8 @@ const SigninForm = () => {
           </div>
         </form>
         <p className="text-center text-gray-600 mb-4">
-         Pas encore de compte ?{' '}
-          <Link href="/signin" className="text-blue-500 hover:underline">
+          Pas encore de compte ?{' '}
+          <Link href="/signup" passHref className="text-blue-500 hover:underline">
             Inscrivez-vous ici
           </Link>{' '}
           pour accéder à votre compte.
