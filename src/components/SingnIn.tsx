@@ -6,8 +6,8 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { toast, Toaster } from 'react-hot-toast';
 
 const SigninForm: React.FC = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null); // Référence au formulaire
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -15,14 +15,14 @@ const SigninForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formRef.current) return; // Vérifie si formRef.current est défini
+    if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
     try {
-      const response = await fetch('http://localhost:3000/users/sign_in', {
+      const response = await fetch('http://localhost:3001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,14 +39,12 @@ const SigninForm: React.FC = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Clear form fields
       formRef.current.reset();
 
       toast.success('Connexion réussie!');
       setTimeout(() => {
-        // Redirection après le toast
         window.location.href = '/dashboard';
-      }, 2000); // Rediriger après 2 secondes
+      }, 2000);
 
     } catch (error) {
       console.error('Error logging in:', error);
@@ -106,7 +104,7 @@ const SigninForm: React.FC = () => {
         </form>
         <p className="text-center text-gray-600 mb-4">
           Pas encore de compte ?{' '}
-          <Link href="/signup" passHref className="text-blue-500 hover:underline">
+          <Link href="/signin " passHref className="text-blue-500 hover:underline">
             Inscrivez-vous ici
           </Link>{' '}
           pour accéder à votre compte.
@@ -117,4 +115,3 @@ const SigninForm: React.FC = () => {
 };
 
 export default SigninForm;
-
