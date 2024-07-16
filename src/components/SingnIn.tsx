@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -39,13 +39,19 @@ const SigninForm: React.FC = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
+      const data = await response.json();
+      const token = response.headers.get('Authorization');
+
+      if (token) {
+        localStorage.setItem('authToken', token);
+      }
+
       formRef.current.reset();
 
       toast.success('Connexion réussie!');
       setTimeout(() => {
         window.location.href = '/dashboard';
       }, 2000);
-
     } catch (error) {
       console.error('Error logging in:', error);
       toast.error('Erreur lors de la connexion.');
@@ -104,7 +110,7 @@ const SigninForm: React.FC = () => {
         </form>
         <p className="text-center text-gray-600 mb-4">
           Pas encore de compte ?{' '}
-          <Link href="/signin " passHref className="text-blue-500 hover:underline">
+          <Link href="/signup" passHref className="text-blue-500 hover:underline">
             Inscrivez-vous ici
           </Link>{' '}
           pour accéder à votre compte.
@@ -115,3 +121,4 @@ const SigninForm: React.FC = () => {
 };
 
 export default SigninForm;
+
