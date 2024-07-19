@@ -6,7 +6,7 @@ import Image from 'next/image';
 import img from '../../public/kid.png';
 
 const Dashboard: React.FC = () => {
-  const [userRole, setUserRole] = useState<string>('Eleve'); 
+  const [userRole, setUserRole] = useState<string>('Directeur'); //Parent - Eleve - Directeur 
 
   useEffect(() => {
     // Obtenez le token depuis le localStorage
