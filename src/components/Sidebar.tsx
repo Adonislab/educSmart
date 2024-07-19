@@ -8,12 +8,14 @@ interface NavLinksProps {
 
 const NavLinks: React.FC<NavLinksProps> = ({ userRole }) => {
   const links = [
-    { href: '/dashboard/home', label: 'Accueil', roles: ['admin', 'user'] },
-    { href: '/dashboard/features', label: 'Fonctionnalités', roles: ['admin', 'user'] },
-    { href: '/dashboard/contents', label: 'Contenus', roles: ['admin', 'user'] },
-    { href: '/dashboard/about', label: 'À propos', roles: ['admin', 'user'] },
-    { href: '/dashboard/contact', label: 'Contact', roles: ['admin', 'user'] },
-    // Ajoutez plus de liens ici selon les rôles
+    { href: 'courses', label: 'Création de  cours', roles: ['Eleve'] },
+    { href: 'cours', label: 'Cours', roles: ['Eleve'] },
+    { href: 'gestioncours', label: 'Gestion des cours', roles: ['Eleve'] },
+    { href: 'appreciation', label: 'Création Apppréciation', roles: ['Eleve'] },
+    { href: 'evaluation', label: 'Appréciations', roles: ['Eleve'] },
+    { href: 'gestionevaluation', label: 'Gestion des appréciations', roles: ['Eleve'] },
+    { href: 'reclamations', label: 'Faire des réclamations', roles: ['Eleve'] },
+    { href: 'consultationreclam', label: 'Consultation des réclamations', roles: ['Eleve'] },
   ];
 
   return (

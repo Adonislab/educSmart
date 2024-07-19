@@ -110,7 +110,7 @@ const SigninForm: React.FC = () => {
         </form>
         <p className="text-center text-gray-600 mb-4">
           Pas encore de compte ?{' '}
-          <Link href="/signup" passHref className="text-blue-500 hover:underline">
+          <Link href="/signin" passHref className="text-blue-500 hover:underline">
             Inscrivez-vous ici
           </Link>{' '}
           pour accéder à votre compte.

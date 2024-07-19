@@ -2,21 +2,36 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import NavLinks from './Sidebar';
+import Image from 'next/image';
+import img from '../../public/kid.png';
 
 const Dashboard: React.FC = () => {
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string>('Eleve'); 
 
   useEffect(() => {
-    // Remplacez ceci par la méthode réelle pour obtenir les informations de l'utilisateur
-    fetch('/api/user')
-      .then(response => response.json())
-      .then(data => setUserRole(data.role))
-      .catch(error => console.error('Error fetching user data:', error));
-  }, []);
+    // Obtenez le token depuis le localStorage
+    const token = localStorage.getItem('authToken');
 
-  if (!userRole) {
-    return <div>Un peu de patience...</div>; // Afficher un état de chargement ou une redirection
-  }
+    if (token) {
+      // Faire une requête pour obtenir les informations de l'utilisateur
+      fetch('http://localhost:3001/login', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.role) {
+          setUserRole(data.role);
+        }
+      })
+      .catch(error => console.error('Error fetching user data:', error));
+    } else {
+      console.error('No token found in localStorage');
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-blue-500 flex">
@@ -28,10 +43,13 @@ const Dashboard: React.FC = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold mb-6 text-white">Bienvenue sur le Tableau de bord</h1>
         <div>
-          <p className="mb-4">Voici votre tableau de bord où vous pouvez naviguer entre les différentes sections.</p>
-          {/* Ajoute ici le contenu spécifique à chaque section */}
+            <Image
+                src={img}
+                width={1500}
+                height={1500}
+                alt="Picture of the author"
+            />
         </div>
       </div>
     </div>
@@ -39,4 +57,5 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
 

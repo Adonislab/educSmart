@@ -10,6 +10,7 @@ interface FormData {
   email: string;
   password: string;
   password_confirmation: string;
+  role: string; // Ajoutez le champ rôle ici
 }
 
 const SignupForm: React.FC = () => {
@@ -18,6 +19,7 @@ const SignupForm: React.FC = () => {
     email: '',
     password: '',
     password_confirmation: '',
+    role: '', // Initialisez le rôle ici
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -39,14 +41,14 @@ const SignupForm: React.FC = () => {
       const data = await response.json();
       toast.success('Inscription réussie!');
       // Redirection à l'aide de window.location
-      window.location.href = '/account-update';
+      window.location.href = '/login';
     } catch (error) {
       toast.error('Erreur lors de l\'inscription.');
       console.error('Error:', error);
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -79,7 +81,7 @@ const SignupForm: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Nom d&apos;utilisteur  
+              Nom d&apos;utilisateur
             </label>
             <input
               id="name"
@@ -106,6 +108,24 @@ const SignupForm: React.FC = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
+          </div>
+          <div>
+            <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+              Rôle
+            </label>
+            <select
+              id="role"
+              name="role"
+              required
+              value={formData.role}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="" disabled>Choisissez un rôle</option>
+              <option value="directeur">Directeur</option>
+              <option value="parent">Parent</option>
+              <option value="eleve">Élève</option>
+            </select>
           </div>
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -183,6 +203,7 @@ const SignupForm: React.FC = () => {
 };
 
 export default SignupForm;
+
 
 
 
